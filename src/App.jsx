@@ -1,7 +1,13 @@
+import { Header } from './components/header/Header'
+import { MealSummary } from './components/meal-summary/MealSummary'
+import { Meals } from './components/meals/Meals'
+
 function App() {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
+    <div>
+      <Header />
+      <MealSummary />
+      <Meals />
     </div>
   )
 }
