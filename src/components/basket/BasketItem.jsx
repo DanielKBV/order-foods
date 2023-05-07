@@ -1,23 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as BasketMinus } from '../../assets/icons/minus.svg'
 import { ReactComponent as BasketPlus } from '../../assets/icons/plus.svg'
+import { cartContext } from '../../store/cartContext'
 
-export const BasketItem = ({ title, price, amount }) => {
+export const BasketItem = ({ title, fixPrice, amount, id }) => {
+  const { incrementFoodHandler, decrementFoodHandler } = useContext(cartContext)
+
   return (
     <Container>
       <Title>{title}</Title>
       <Content>
         <PriceAndAmountContainer>
-          <Price>${price}</Price>
+          <Price>${fixPrice}</Price>
           <Amount>x{amount}</Amount>
         </PriceAndAmountContainer>
         <CounterContainer>
-          <ContainerStyleMinusBasket>
+          <ContainerStyleMinusBasket onClick={() => decrementFoodHandler(id)}>
             <BasketMinus />
           </ContainerStyleMinusBasket>
 
-          <ContainerStylePlusBasket>
+          <ContainerStylePlusBasket onClick={() => incrementFoodHandler(id)}>
             <BasketPlus />
           </ContainerStylePlusBasket>
         </CounterContainer>
@@ -29,7 +32,7 @@ export const BasketItem = ({ title, price, amount }) => {
 const Container = styled.div`
   padding: 24px 10px;
   width: 100%;
-  border-bottom: 1px solid #d6d6d6;
+  border-bottom: 2px solid #d6d6d6;
 `
 
 const Title = styled.p`
@@ -52,7 +55,7 @@ const Content = styled.div`
 const PriceAndAmountContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 153px;
+  width: 155px;
   justify-content: space-between;
 `
 
@@ -81,9 +84,10 @@ const CounterContainer = styled.div`
   gap: 14px;
 `
 
-const ContainerStyleMinusBasket = styled.div`
+const ContainerStyleMinusBasket = styled.button`
   box-sizing: border-box;
   border: 1px solid #8a2b06;
+  background-color: #fff;
   border-radius: 6px;
   width: 48px;
   height: 36px;
@@ -106,9 +110,10 @@ const ContainerStyleMinusBasket = styled.div`
   }
 `
 
-const ContainerStylePlusBasket = styled.div`
+const ContainerStylePlusBasket = styled.button`
   box-sizing: border-box;
   border: 1px solid #8a2b06;
+  background-color: #fff;
   border-radius: 6px;
   width: 48px;
   height: 36px;

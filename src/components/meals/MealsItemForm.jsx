@@ -1,17 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '../UI/button/Button'
 import { ReactComponent as MealPlus } from '../../assets/icons/plusAdd.svg'
 
-export const MealsItemForm = ({ id }) => {
+export const MealsItemForm = ({ id, onAdd }) => {
+  const [amount, setAmount] = useState(1)
+
+  const changeHandler = (e) => {
+    setAmount(e.target.value)
+  }
+
+  const addItemHandler = (event) => {
+    event.preventDefault()
+    onAdd(+amount)
+  }
+
   return (
     <StyledForm>
       <InputContainer>
         <LabelStyles htmlFor={id}>Amount</LabelStyles>
 
-        <Input type="number" id={id} max={5} min={1} defaultValue={1} />
+        <Input
+          type="number"
+          value={amount}
+          onChange={changeHandler}
+          id={id}
+          // max={5}
+          min={1}
+        />
       </InputContainer>
-      <Button fontWeight="700" fontSize="14px">
+      <Button
+        fontWeight="700"
+        fontSize="14px"
+        dbBgColor="#c9390097"
+        onClick={addItemHandler}
+      >
         <StyledIcon /> Add
       </Button>
     </StyledForm>

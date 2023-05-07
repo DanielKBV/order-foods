@@ -2,12 +2,21 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button } from '../UI/button/Button'
 
-export const TotalAmount = ({ price }) => {
+export const TotalAmount = ({ toggleHandler, totalPrice }) => {
+  const isOrderButton =
+    totalPrice > 0 ? (
+      <Button fontWeight="500" fontSize="16px" padding="10px 32px">
+        Order
+      </Button>
+    ) : null
+
+  const resultPrice = +totalPrice
+
   return (
     <div>
       <InfoContainer>
         <Label>Total Amount</Label>
-        <Prise>$ 20.00</Prise>
+        <Prise>$ {+resultPrice.toFixed(2)}</Prise>
       </InfoContainer>
       <ActionButtonContainer>
         <Button
@@ -20,11 +29,12 @@ export const TotalAmount = ({ price }) => {
           padding="10px 32px"
           hvBgColor="#8A2B06"
           hvColor="#fff"
-          acvBgColor="#993108"
           acvColor="#fff"
+          onClick={toggleHandler}
         >
           Close
         </Button>
+        {isOrderButton}
       </ActionButtonContainer>
     </div>
   )

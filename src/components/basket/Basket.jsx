@@ -1,57 +1,42 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Modal } from '../UI/modal/Modal'
 import styled from 'styled-components'
 import { BasketItem } from './BasketItem'
 import { TotalAmount } from './TotalAmount'
+import { cartContext } from '../../store/cartContext'
 
-const items = [
-  {
-    id: '1',
-    title: 'Sushi',
-    description: 'Finest fish and veggies',
-    price: '22.99',
-    amount: '1',
-  },
-  {
-    id: '2',
-    title: 'Schnitzel',
-    description: 'A german specialty!',
-    price: '16.00',
-    amount: '1',
-  },
-  {
-    id: '3',
-    title: 'Barbecue Burger',
-    description: 'American, raw, meaty',
-    price: '12.99',
-    amount: '1',
-  },
-  {
-    id: '4',
-    title: 'Green Bowl',
-    description: 'Healthy...and green...',
-    price: '19.99',
-    amount: '1',
-  },
-]
+export const Basket = ({ toggleHandler }) => {
+  const { items } = useContext(cartContext)
+  console.log('items: ', items)
 
-export const Basket = () => {
+  const orderAmount = items.reduce(
+    (prev, current) => prev + +current.price.toFixed(2),
+    0
+  )
+
+  console.log('orderAmount: ', +orderAmount.toFixed(2))
+
   return (
-    <Modal>
+    <Modal onClick={toggleHandler}>
       <Content>
         {items.length ? (
           <FixedWidthContainer>
-            {items.map((item) => (
-              <BasketItem
-                key={item.id}
-                title={item.title}
-                price={item.price}
-                amount={item.amount}
-              />
-            ))}
+            {items.map((item) => {
+              return (
+                item.amount > 0 && (
+                  <BasketItem
+                    key={item.id}
+                    id={item.id}
+                    title={item.title}
+                    fixPrice={item.fixPrice}
+                    amount={item.amount}
+                  />
+                )
+              )
+            })}
           </FixedWidthContainer>
         ) : null}
-        <TotalAmount />
+        <TotalAmount toggleHandler={toggleHandler} totalPrice={orderAmount} />
       </Content>
     </Modal>
   )
@@ -65,5 +50,5 @@ const Content = styled.div`
 
 const FixedWidthContainer = styled.div`
   overflow-y: auto;
-  max-height: 228px;
+  max-height: 260px;
 `

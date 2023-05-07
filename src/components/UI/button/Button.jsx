@@ -2,20 +2,25 @@ import styled from 'styled-components'
 
 import React from 'react'
 
-export const Button = ({
-  children,
-  onClick,
-  color = '#fff',
-  bgColor = '#8A2B06',
-  hvBgColor = '#7e2a0a',
-  hvColor,
-  acvBgColor = '#993108',
-  border = 'none',
-  acvColor,
-  fontSize,
-  fontWeight,
-  padding = '10px 24px 10px 16px',
-}) => {
+export const Button = (props) => {
+  const {
+    children,
+    onClick,
+    color = '#fff',
+    bgColor = '#8A2B06',
+    hvBgColor = '#7e2a0a',
+    hvColor,
+    acvBgColor = '#993108',
+    border = 'none',
+    acvColor,
+    fontSize,
+    fontWeight,
+    padding = '10px 24px 10px 16px',
+    dbBgColor,
+    dbColor = '#fff',
+    disabled,
+  } = props
+
   return (
     <ButtonStyle
       color={color}
@@ -29,6 +34,9 @@ export const Button = ({
       fontSize={fontSize}
       fontWeight={fontWeight}
       padding={padding}
+      disabledBackgroundColor={dbBgColor}
+      disabledColor={dbColor}
+      disabled={disabled}
     >
       {children}
     </ButtonStyle>
@@ -52,7 +60,6 @@ const ButtonStyle = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding: 10px 24px 10px 16px; */
 
   border: ${(props) => props.border};
 
@@ -64,6 +71,11 @@ const ButtonStyle = styled.button`
   :active {
     background-color: ${(props) => props.activeBackgroundColor};
     color: ${(props) => props.activeColor};
+  }
+
+  :disabled {
+    background-color: ${(props) => props.disabledBackgroundColor};
+    color: ${(props) => props.disabledColor};
   }
 
   cursor: pointer;
