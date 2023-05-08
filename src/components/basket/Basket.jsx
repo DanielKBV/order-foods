@@ -6,15 +6,7 @@ import { TotalAmount } from './TotalAmount'
 import { cartContext } from '../../store/cartContext'
 
 export const Basket = ({ toggleHandler }) => {
-  const { items } = useContext(cartContext)
-  console.log('items: ', items)
-
-  const orderAmount = items.reduce(
-    (prev, current) => prev + +current.price.toFixed(2),
-    0
-  )
-
-  console.log('orderAmount: ', +orderAmount.toFixed(2))
+  const { items, totalPrice } = useContext(cartContext)
 
   return (
     <Modal onClick={toggleHandler}>
@@ -36,7 +28,7 @@ export const Basket = ({ toggleHandler }) => {
             })}
           </FixedWidthContainer>
         ) : null}
-        <TotalAmount toggleHandler={toggleHandler} totalPrice={orderAmount} />
+        <TotalAmount toggleHandler={toggleHandler} totalPrice={totalPrice} />
       </Content>
     </Modal>
   )

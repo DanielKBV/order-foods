@@ -13,7 +13,6 @@ export const ActionType = {
 export const cartReducer = (state, action) => {
   switch (action.type) {
     case ActionType.ADD_ITEM:
-      console.log('action: ', action.payload)
       const isExist = state.find((item) => item.id === action.payload.id)
 
       if (!state.length) {
@@ -25,13 +24,10 @@ export const cartReducer = (state, action) => {
       }
 
       const updatedItem = state.map((item) => {
-        const rr = item.price + item.fixPrice * action.payload.amount
-
         if (item.id === action.payload.id) {
           return {
             ...item,
             amount: action.payload.amount + item.amount,
-            price: rr,
           }
         }
         return item
@@ -45,7 +41,6 @@ export const cartReducer = (state, action) => {
           return {
             ...item,
             amount: item.amount + 1,
-            price: item.price + item.fixPrice,
           }
         }
         return item
@@ -57,7 +52,6 @@ export const cartReducer = (state, action) => {
           return {
             ...item,
             amount: item.amount - 1,
-            price: item.price - item.fixPrice,
           }
         }
         return item

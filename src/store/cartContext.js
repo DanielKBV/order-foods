@@ -32,12 +32,18 @@ export const CartProvider = ({ children }) => {
     })
   }
 
+  const totalPrice = cartState.reduce(
+    (prev, current) => prev + +current.price.toFixed(2) * current.amount,
+    0
+  )
+
   const cartValue = {
     items: cartState,
     addItem,
     totalAmount: orderAmount,
     incrementFoodHandler,
     decrementFoodHandler,
+    totalPrice,
   }
 
   return (
