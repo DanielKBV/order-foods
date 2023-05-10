@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { cartContext } from '../../store/cartContext'
 
 export const OrderBasket = ({ children, toggleHandler, className }) => {
-  
-  const { totalAmount } = useContext(cartContext)
+  const { items } = useContext(cartContext)
+
+  const totalAmount = items?.reduce((prev, current) => prev + current.amount, 0)
 
   return (
     <Button onClick={toggleHandler} className={className}>

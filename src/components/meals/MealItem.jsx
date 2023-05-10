@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components'
 import { MealsItemForm } from './MealsItemForm'
 import { cartContext } from '../../store/cartContext'
@@ -6,18 +6,12 @@ import { cartContext } from '../../store/cartContext'
 export const MealItem = ({ meal }) => {
   const { addItem } = useContext(cartContext)
 
-  const addBasket = (amount) => {
-    const data = {
-      id: meal.id,
-      fixPrice: meal.fixPrice,
-      title: meal.title,
-      description: meal.description,
-      price: meal.price,
-      amount: amount,
-    }
-
-    addItem(data)
-  }
+  const addBasket = useCallback(
+    (amount) => {
+      addItem(meal._id, amount)
+    },
+    [addItem, meal._id]
+  )
 
   return (
     <StyledItem>
@@ -27,7 +21,7 @@ export const MealItem = ({ meal }) => {
         <span>{meal.price} $</span>
       </StyledItemInfo>
       <div>
-        <MealsItemForm id={meal.id} price={meal.price} onAdd={addBasket} />
+        <MealsItemForm id={meal._id} price={meal.price} onAdd={addBasket} />
       </div>
     </StyledItem>
   )

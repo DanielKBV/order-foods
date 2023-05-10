@@ -1,49 +1,86 @@
-import { createContext, useReducer } from 'react'
-import { ActionType, cartReducer } from './cartReducer'
+import { createContext, useEffect, useState } from 'react'
+import { fetchRequest } from '../lib/fetchAPI'
 
-export const cartContext = createContext({
-  items: [],
-  totalAmount: 0,
-})
+export const cartContext = createContext()
 
 export const CartProvider = ({ children }) => {
-  const [cartState, dispatch] = useReducer(cartReducer, [])
+  const [items, setItems] = useState([])
 
-  const addItem = (data) => {
-    dispatch({ type: ActionType.ADD_ITEM, payload: data })
+  const addItem = async (id, amount) => {
+    try {
+      const response = await fetchRequest(`/foods/${id}/addToBasket`, {
+        method: 'POST',
+        body: { amount: amount },
+      })
+
+      setItems(response.items)
+    } catch (error) {
+      new Error(error)
+    }
   }
 
-  const orderAmount = cartState.reduce(
-    (prev, current) => prev + current.amount,
-    0
-  )
-
-  const incrementFoodHandler = (id) => {
-    dispatch({
-      type: ActionType.INCREMENT,
-      payload: id,
-    })
+  const getBasket = async () => {
+    try {
+      const response = await fetchRequest('/basket')
+      setItems(response.items)
+    } catch (error) {
+      new Error(error)
+    }
   }
 
-  const decrementFoodHandler = (id) => {
-    dispatch({
-      type: ActionType.DECREMENT,
-      payload: id,
-    })
+  const incrementFoodHandler = async (id, amount) => {
+    try {
+      const response = await fetchRequest(`/basketItem/${id}/update`, {
+        method: 'PUT',
+        body: { amount: amount + 1 },
+      })
+
+      setItems(response.items)
+
+      getBasket()
+    } catch (error) {
+      new Error(error)
+    }
   }
 
-  const totalPrice = cartState.reduce(
-    (prev, current) => prev + +current.price.toFixed(2) * current.amount,
-    0
-  )
+  const decrementFoodHandler = async (id, amount) => {
+    if (amount !== 0) {
+      try {
+        const response = await fetchRequest(`/basketItem/${id}/update`, {
+          method: 'PUT',
+          body: { amount: amount },
+        })
+        setItems(response.items)
+        getBasket()
+      } catch (error) {
+        new Error(error)
+      }
+    } else {
+      try {
+        const response = await fetchRequest(`/basketItem/${id}/delete`, {
+          method: 'DELETE',
+        })
+        setItems(response.items)
+        return getBasket()
+      } catch (error) {
+        new Error(error)
+      }
+      return getBasket()
+    }
+    return getBasket()
+  }
+
+  useEffect(() => {
+    getBasket()
+  }, [])
 
   const cartValue = {
-    items: cartState,
     addItem,
-    totalAmount: orderAmount,
     incrementFoodHandler,
     decrementFoodHandler,
-    totalPrice,
+    items,
+    setItems,
+    getBasket,
   }
 
   return (

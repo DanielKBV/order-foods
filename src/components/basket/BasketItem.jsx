@@ -4,7 +4,7 @@ import { ReactComponent as BasketMinus } from '../../assets/icons/minus.svg'
 import { ReactComponent as BasketPlus } from '../../assets/icons/plus.svg'
 import { cartContext } from '../../store/cartContext'
 
-export const BasketItem = ({ title, fixPrice, amount, id }) => {
+export const BasketItem = ({ title, price, amount, id }) => {
   const { incrementFoodHandler, decrementFoodHandler } = useContext(cartContext)
 
   return (
@@ -12,15 +12,19 @@ export const BasketItem = ({ title, fixPrice, amount, id }) => {
       <Title>{title}</Title>
       <Content>
         <PriceAndAmountContainer>
-          <Price>${fixPrice}</Price>
+          <Price>${price}</Price>
           <Amount>x{amount}</Amount>
         </PriceAndAmountContainer>
         <CounterContainer>
-          <ContainerStyleMinusBasket onClick={() => decrementFoodHandler(id)}>
+          <ContainerStyleMinusBasket
+            onClick={() => decrementFoodHandler(id, amount - 1)}
+          >
             <BasketMinus />
           </ContainerStyleMinusBasket>
 
-          <ContainerStylePlusBasket onClick={() => incrementFoodHandler(id)}>
+          <ContainerStylePlusBasket
+            onClick={() => incrementFoodHandler(id, amount)}
+          >
             <BasketPlus />
           </ContainerStylePlusBasket>
         </CounterContainer>

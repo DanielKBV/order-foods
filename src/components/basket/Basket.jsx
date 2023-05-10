@@ -6,21 +6,26 @@ import { TotalAmount } from './TotalAmount'
 import { cartContext } from '../../store/cartContext'
 
 export const Basket = ({ toggleHandler }) => {
-  const { items, totalPrice } = useContext(cartContext)
+  const { items } = useContext(cartContext)
+
+  const totalPrice = items?.reduce(
+    (prev, current) => prev + +current.price.toFixed(2) * current.amount,
+    0
+  )
 
   return (
     <Modal onClick={toggleHandler}>
       <Content>
-        {items.length ? (
+        {items?.length ? (
           <FixedWidthContainer>
             {items.map((item) => {
               return (
                 item.amount > 0 && (
                   <BasketItem
-                    key={item.id}
-                    id={item.id}
+                    key={item._id}
+                    id={item._id}
                     title={item.title}
-                    fixPrice={item.fixPrice}
+                    price={item.price}
                     amount={item.amount}
                   />
                 )

@@ -7,12 +7,12 @@ export const MealSummaryCard = () => {
       <Box>
         <h3>Delicious Food, Delivered To You</h3>
         <Text>
-          Choose your favorite meal from our broad selection of available meals
-          and enjoy a delicious lunch or dinner at home.
+          Choose your favorite meal from our broad selection of available meals
+          and enjoy a delicious lunch or dinner at home.
         </Text>
         <Text>
           All our meals are cooked with high-quality ingredients, just-in-time
-          and of course by  experienced chefs!
+          and of course by  experienced chefs!
         </Text>
       </Box>
     </Container>

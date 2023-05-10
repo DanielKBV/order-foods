@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { memo } from 'react'
 import styled, { keyframes } from 'styled-components'
 
-export const Card = ({ children }) => {
+export const Card = memo(({ children }) => {
   return <CardStyle>{children}</CardStyle>
-}
+})
 
 const rotate = keyframes`
  from {

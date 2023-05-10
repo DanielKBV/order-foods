@@ -25,7 +25,6 @@ export const MealsItemForm = ({ id, onAdd }) => {
           value={amount}
           onChange={changeHandler}
           id={id}
-          // max={5}
           min={1}
         />
       </InputContainer>
