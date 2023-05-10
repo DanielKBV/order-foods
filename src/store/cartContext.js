@@ -1,10 +1,12 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useReducer } from 'react'
 import { fetchRequest } from '../lib/fetchAPI'
+import { cartReducer } from './cartReducer'
 
 export const cartContext = createContext()
 
 export const CartProvider = ({ children }) => {
-  const [items, setItems] = useState([])
+  const [cartState, dispatch] = useReducer(cartReducer, [])
+  console.log('cartState: ', cartState)
 
   const addItem = async (id, amount) => {
     try {
@@ -13,7 +15,7 @@ export const CartProvider = ({ children }) => {
         body: { amount: amount },
       })
 
-      setItems(response.items)
+      dispatch({ type: 'NEW_MEALS', payload: response.items })
     } catch (error) {
       new Error(error)
     }
@@ -22,7 +24,7 @@ export const CartProvider = ({ children }) => {
   const getBasket = async () => {
     try {
       const response = await fetchRequest('/basket')
-      setItems(response.items)
+      dispatch({ type: 'NEW_MEALS', payload: response.items })
     } catch (error) {
       new Error(error)
     }
@@ -34,8 +36,7 @@ export const CartProvider = ({ children }) => {
         method: 'PUT',
         body: { amount: amount + 1 },
       })
-
-      setItems(response.items)
+      dispatch({ type: 'NEW_MEALS', payload: response.items })
 
       getBasket()
     } catch (error) {
@@ -50,7 +51,8 @@ export const CartProvider = ({ children }) => {
           method: 'PUT',
           body: { amount: amount },
         })
-        setItems(response.items)
+        dispatch({ type: 'NEW_MEALS', payload: response.items })
+
         getBasket()
       } catch (error) {
         new Error(error)
@@ -60,7 +62,8 @@ export const CartProvider = ({ children }) => {
         const response = await fetchRequest(`/basketItem/${id}/delete`, {
           method: 'DELETE',
         })
-        setItems(response.items)
+        dispatch({ type: 'NEW_MEALS', payload: response.items })
+
         return getBasket()
       } catch (error) {
         new Error(error)
@@ -78,8 +81,7 @@ export const CartProvider = ({ children }) => {
     addItem,
     incrementFoodHandler,
     decrementFoodHandler,
-    items,
-    setItems,
+    items: cartState,
     getBasket,
   }
 
