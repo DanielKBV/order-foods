@@ -1,12 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { OrderBasket } from './OrderBasket'
-import { cartContext } from '../../store/cartContext'
+import { useSelector } from 'react-redux'
 
 export const Header = ({ toggleHandler }) => {
   const [animationClass, setAnimationClass] = useState('')
-  const { items } = useContext(cartContext)
+  const { items } = useSelector((state) => state.basket)
 
   const plusAnimation = () => {
     setAnimationClass('bump')
@@ -44,6 +43,7 @@ const HeaderStyle = styled.header`
   padding: 22px 120px;
   color: #ffffff;
   top: 0;
+  z-index: 998;
 
   .bump {
     animation: bump 300ms ease-out;

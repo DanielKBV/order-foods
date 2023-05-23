@@ -1,12 +1,18 @@
-import React, { useContext } from 'react'
+import React, { useEffect } from 'react'
 import { Modal } from '../UI/modal/Modal'
 import styled from 'styled-components'
 import { BasketItem } from './BasketItem'
 import { TotalAmount } from './TotalAmount'
-import { cartContext } from '../../store/cartContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { getBasket } from '../../store/basket/basketThunk'
 
 export const Basket = ({ toggleHandler }) => {
-  const { items } = useContext(cartContext)
+  const { items } = useSelector((state) => state.basket)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getBasket())
+  }, [dispatch])
 
   const totalPrice = items?.reduce(
     (prev, current) => prev + +current.price.toFixed(2) * current.amount,

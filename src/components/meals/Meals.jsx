@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Card } from '../UI/card/Card'
 import { MealItem } from './MealItem'
-import { fetchRequest } from '../../lib/fetchAPI'
+import { useDispatch, useSelector } from 'react-redux'
+import { getFoods } from '../../store/meals/mealsThunk'
 
 export const Meals = () => {
-  const [meals, setMeals] = useState()
-
-  const getFoods = async () => {
-    try {
-      const response = await fetchRequest('/foods')
-      setMeals(response)
-    } catch (error) {
-      new Error(error)
-    }
-  }
+  const { meals } = useSelector((state) => state.meals)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    getFoods()
-  }, [])
+    dispatch(getFoods())
+  }, [dispatch])
 
   return (
     <Container>

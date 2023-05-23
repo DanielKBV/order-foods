@@ -1,10 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useEffect } from 'react'
 import { ReactComponent as BasketIcon } from '../../assets/icons/Group.svg'
 import styled from 'styled-components'
-import { cartContext } from '../../store/cartContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { getBasket } from '../../store/basket/basketThunk'
 
 export const OrderBasket = ({ children, toggleHandler, className }) => {
-  const { items } = useContext(cartContext)
+  const { items } = useSelector((state) => state.basket)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getBasket())
+  }, [dispatch])
 
   const totalAmount = items?.reduce((prev, current) => prev + current.amount, 0)
 

@@ -3,7 +3,8 @@ import { Header } from './components/header/Header'
 import { MealSummary } from './components/meal-summary/MealSummary'
 import { Meals } from './components/meals/Meals'
 import { Basket } from './components/basket/Basket'
-import { CartProvider } from './store/cartContext'
+import { Provider } from 'react-redux'
+import { store } from './store'
 
 const AppContent = () => {
   const [toggle, setToggle] = useState(false)
@@ -24,9 +25,9 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <CartProvider>
+    <Provider store={store}>
       <AppContent />
-    </CartProvider>
+    </Provider>
   )
 }
 

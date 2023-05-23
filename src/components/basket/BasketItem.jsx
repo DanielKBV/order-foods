@@ -1,11 +1,20 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { ReactComponent as BasketMinus } from '../../assets/icons/minus.svg'
 import { ReactComponent as BasketPlus } from '../../assets/icons/plus.svg'
-import { cartContext } from '../../store/cartContext'
+import { decrementFood, incrementFood } from '../../store/basket/basketThunk'
+import { useDispatch } from 'react-redux'
 
 export const BasketItem = ({ title, price, amount, id }) => {
-  const { incrementFoodHandler, decrementFoodHandler } = useContext(cartContext)
+  const dispatch = useDispatch()
+
+  const incrementFoodHandler = () => {
+    dispatch(incrementFood(id, amount))
+  }
+
+  const decrementFoodHandler = () => {
+    dispatch(decrementFood(id, amount - 1))
+  }
 
   return (
     <Container>
@@ -16,15 +25,11 @@ export const BasketItem = ({ title, price, amount, id }) => {
           <Amount>x{amount}</Amount>
         </PriceAndAmountContainer>
         <CounterContainer>
-          <ContainerStyleMinusBasket
-            onClick={() => decrementFoodHandler(id, amount - 1)}
-          >
+          <ContainerStyleMinusBasket onClick={decrementFoodHandler}>
             <BasketMinus />
           </ContainerStyleMinusBasket>
 
-          <ContainerStylePlusBasket
-            onClick={() => incrementFoodHandler(id, amount)}
-          >
+          <ContainerStylePlusBasket onClick={incrementFoodHandler}>
             <BasketPlus />
           </ContainerStylePlusBasket>
         </CounterContainer>

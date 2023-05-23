@@ -1,16 +1,17 @@
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { MealsItemForm } from './MealsItemForm'
-import { cartContext } from '../../store/cartContext'
+import { useDispatch } from 'react-redux'
+import { addItem } from '../../store/basket/basketThunk'
 
 export const MealItem = ({ meal }) => {
-  const { addItem } = useContext(cartContext)
+  const dispatch = useDispatch()
 
   const addBasket = useCallback(
     (amount) => {
-      addItem(meal._id, amount)
+      dispatch(addItem(meal._id, amount))
     },
-    [addItem, meal._id]
+    [dispatch, meal._id]
   )
 
   return (
