@@ -24,7 +24,7 @@ export const Modal = ({ children, onClick }) => {
 
 const ModalStyle = styled.div`
   position: fixed;
-  top: 22vh;
+  top: 30vh;
   left: 4%;
   background-color: white;
   padding: 1rem;
@@ -53,8 +53,9 @@ const StyledBackdrop = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
   width: 100%;
-  height: 1305px;
+  height: 110rem;
   background-color: rgba(0, 0, 0, 0.75);
 
   backdrop-filter: blur(2px);

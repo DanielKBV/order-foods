@@ -9,11 +9,11 @@ export const BasketItem = ({ title, price, amount, id }) => {
   const dispatch = useDispatch()
 
   const incrementFoodHandler = () => {
-    dispatch(incrementFood(id, amount))
+    dispatch(incrementFood({ id: id, amount: amount }))
   }
 
   const decrementFoodHandler = () => {
-    dispatch(decrementFood(id, amount - 1))
+    dispatch(decrementFood({ id: id, amount: amount - 1 }))
   }
 
   return (

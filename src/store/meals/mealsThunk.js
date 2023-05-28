@@ -1,14 +1,15 @@
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import { fetchRequest } from '../../lib/fetchAPI'
-import { ActionTypeMeals } from './meals'
 
-export const getFoods = () => {
-  return async (dispatch) => {
+export const getMeals = createAsyncThunk(
+  'meals/getMeals',
+  async (_, { rejectWithValue }) => {
     try {
       const response = await fetchRequest('/foods')
 
-      dispatch({ type: ActionTypeMeals.MEALS, payload: response })
+      return response
     } catch (error) {
-      new Error(error)
+      return rejectWithValue(error?.response.message || 'Something went wrong')
     }
   }
-}
+)

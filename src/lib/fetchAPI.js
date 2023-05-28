@@ -16,6 +16,7 @@ export const fetchRequest = async (urlPath, options = {}) => {
     }
 
     const response = await fetch(`${BASE_URL}${urlPath}`, requestOption)
+
     const { data } = await response.json()
 
     return data

@@ -1,37 +1,40 @@
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import { fetchRequest } from '../../lib/fetchAPI'
-import { ActionTypeBasket } from './basket'
 
-export const getBasket = () => {
-  return async (dispatch) => {
+export const getBasket = createAsyncThunk(
+  'basket/getBasket ',
+  async (_, { rejectWithValue }) => {
     try {
       const response = await fetchRequest('/basket')
 
-      dispatch({ type: ActionTypeBasket.NEW_MEALS, payload: response.items })
+      return response.items
     } catch (error) {
-      new Error(error)
+      return rejectWithValue(error)
     }
   }
-}
+)
 
-export const addItem = (id, amount) => {
-  return async (dispatch) => {
+export const addItem = createAsyncThunk(
+  'basket/addItem ',
+  async (payload, { dispatch, rejectWithValue }) => {
     try {
-      const response = await fetchRequest(`/foods/${id}/addToBasket`, {
+      const response = await fetchRequest(`/foods/${payload.id}/addToBasket`, {
         method: 'POST',
-        body: { amount: amount },
+        body: { amount: payload.amount },
       })
 
       dispatch(getBasket())
 
       return await response.items
     } catch (error) {
-      new Error(error)
+      return rejectWithValue(error)
     }
   }
-}
+)
 
-export const incrementFood = (id, amount) => {
-  return async (dispatch) => {
+export const incrementFood = createAsyncThunk(
+  'basket/putIncrementFood',
+  async ({ amount, id }, { dispatch, rejectWithValue }) => {
     try {
       const response = await fetchRequest(`/basketItem/${id}/update`, {
         method: 'PUT',
@@ -42,13 +45,14 @@ export const incrementFood = (id, amount) => {
 
       return await response.items
     } catch (error) {
-      new Error(error)
+      return rejectWithValue(error)
     }
   }
-}
+)
 
-export const decrementFood = (id, amount) => {
-  return async (dispatch) => {
+export const decrementFood = createAsyncThunk(
+  'basket/putDecrementFood',
+  async ({ amount, id }, { dispatch, rejectWithValue }) => {
     if (amount !== 0) {
       try {
         const response = await fetchRequest(`/basketItem/${id}/update`, {
@@ -60,7 +64,7 @@ export const decrementFood = (id, amount) => {
 
         return await response.items
       } catch (error) {
-        new Error(error)
+        return rejectWithValue(error)
       }
     } else {
       try {
@@ -72,8 +76,8 @@ export const decrementFood = (id, amount) => {
 
         return await response.items
       } catch (error) {
-        new Error(error)
+        return rejectWithValue(error)
       }
     }
   }
-}
+)

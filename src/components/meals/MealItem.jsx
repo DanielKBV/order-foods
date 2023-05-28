@@ -9,7 +9,7 @@ export const MealItem = ({ meal }) => {
 
   const addBasket = useCallback(
     (amount) => {
-      dispatch(addItem(meal._id, amount))
+      dispatch(addItem({ id: meal._id, amount: amount }))
     },
     [dispatch, meal._id]
   )

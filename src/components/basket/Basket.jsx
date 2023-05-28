@@ -5,9 +5,11 @@ import { BasketItem } from './BasketItem'
 import { TotalAmount } from './TotalAmount'
 import { useDispatch, useSelector } from 'react-redux'
 import { getBasket } from '../../store/basket/basketThunk'
+import { Loading } from '../UI/loading/Loading'
 
 export const Basket = ({ toggleHandler }) => {
-  const { items } = useSelector((state) => state.basket)
+  const { items, isLoading } = useSelector((state) => state.basket)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -20,13 +22,15 @@ export const Basket = ({ toggleHandler }) => {
   )
 
   return (
-    <Modal onClick={toggleHandler}>
-      <Content>
-        {items?.length ? (
-          <FixedWidthContainer>
-            {items.map((item) => {
-              return (
-                item.amount > 0 && (
+    <>
+      {isLoading && <Loading />}
+
+      <Modal onClick={toggleHandler}>
+        <Content>
+          {items?.length ? (
+            <FixedWidthContainer>
+              {items.map((item) => {
+                return (
                   <BasketItem
                     key={item._id}
                     id={item._id}
@@ -35,13 +39,13 @@ export const Basket = ({ toggleHandler }) => {
                     amount={item.amount}
                   />
                 )
-              )
-            })}
-          </FixedWidthContainer>
-        ) : null}
-        <TotalAmount toggleHandler={toggleHandler} totalPrice={totalPrice} />
-      </Content>
-    </Modal>
+              })}
+            </FixedWidthContainer>
+          ) : null}
+          <TotalAmount toggleHandler={toggleHandler} totalPrice={totalPrice} />
+        </Content>
+      </Modal>
+    </>
   )
 }
 
