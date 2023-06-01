@@ -3,11 +3,19 @@ import { Header } from './components/header/Header'
 import { MealSummary } from './components/meal-summary/MealSummary'
 import { Meals } from './components/meals/Meals'
 import { Basket } from './components/basket/Basket'
-import { Provider } from 'react-redux'
+import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from './store'
+import { ActionsTypeSnackbar } from './store/snackbar/snackbar'
+import { SnackbarMui } from './components/UI/snackbar/Snackbar'
 
 const AppContent = () => {
   const [toggle, setToggle] = useState(false)
+  const { open } = useSelector((state) => state.snackbar)
+  const dispatch = useDispatch()
+
+  const onCloseHandler = () => {
+    dispatch(ActionsTypeSnackbar.closeSnackbar())
+  }
 
   const toggleHandler = useCallback(() => {
     setToggle((prev) => !prev)
@@ -15,10 +23,11 @@ const AppContent = () => {
 
   return (
     <>
+      {open && <SnackbarMui onClose={onCloseHandler} />}
       <Header toggleHandler={toggleHandler} />
       <MealSummary />
       <Meals />
-      {toggle && <Basket toggleHandler={toggleHandler} />}
+      {toggle && <Basket toggleHandler={toggleHandler} toggle={toggle} />}
     </>
   )
 }

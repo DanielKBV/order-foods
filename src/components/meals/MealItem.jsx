@@ -1,18 +1,31 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { MealsItemForm } from './MealsItemForm'
 import { useDispatch } from 'react-redux'
 import { addItem } from '../../store/basket/basketThunk'
+import { ActionsTypeSnackbar } from '../../store/snackbar/snackbar'
 
 export const MealItem = ({ meal }) => {
   const dispatch = useDispatch()
 
-  const addBasket = useCallback(
-    (amount) => {
-      dispatch(addItem({ id: meal._id, amount: amount }))
-    },
-    [dispatch, meal._id]
-  )
+  const addBasket = async (amount) => {
+    try {
+      await dispatch(
+        addItem({
+          id: meal._id,
+          amount: amount,
+        })
+      ).unwrap()
+
+      dispatch(ActionsTypeSnackbar.doSuccess())
+    } catch (error) {
+      dispatch(
+        ActionsTypeSnackbar.doError(
+          error ? error.message : 'Something went wrong'
+        )
+      )
+    }
+  }
 
   return (
     <StyledItem>

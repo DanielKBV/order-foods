@@ -11,7 +11,6 @@ export const ActionTypeBasket = {
 const initialState = {
   isLoading: false,
   items: [],
-  isError: '',
 }
 
 export const basketSlice = createSlice({
@@ -27,9 +26,8 @@ export const basketSlice = createSlice({
       .addCase(getBasket.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(getBasket.rejected, (state, action) => {
+      .addCase(getBasket.rejected, (state) => {
         state.isLoading = false
-        state.isError = action.payload
       })
 
     builder
@@ -39,9 +37,8 @@ export const basketSlice = createSlice({
       .addCase(addItem.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(addItem.rejected, (state, action) => {
+      .addCase(addItem.rejected, (state) => {
         state.isLoading = false
-        state.isError = action.payload
       })
 
     builder
@@ -51,9 +48,8 @@ export const basketSlice = createSlice({
       .addCase(incrementFood.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(incrementFood.rejected, (state, action) => {
+      .addCase(incrementFood.rejected, (state) => {
         state.isLoading = false
-        state.isError = action.payload
       })
 
     builder
@@ -63,9 +59,8 @@ export const basketSlice = createSlice({
       .addCase(decrementFood.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(decrementFood.rejected, (state, action) => {
+      .addCase(decrementFood.rejected, (state) => {
         state.isLoading = false
-        state.isError = action.payload
       })
   },
 })

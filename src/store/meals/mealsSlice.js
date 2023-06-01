@@ -4,7 +4,6 @@ import { getMeals } from './mealsThunk'
 const initialState = {
   meals: [],
   isLoading: false,
-  isError: '',
 }
 
 export const mealsSlice = createSlice({
@@ -20,9 +19,8 @@ export const mealsSlice = createSlice({
       .addCase(getMeals.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(getMeals.rejected, (state, action) => {
+      .addCase(getMeals.rejected, (state) => {
         state.isLoading = false
-        state.isError = action.payload
       })
   },
 })

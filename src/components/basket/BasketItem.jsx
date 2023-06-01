@@ -4,16 +4,37 @@ import { ReactComponent as BasketMinus } from '../../assets/icons/minus.svg'
 import { ReactComponent as BasketPlus } from '../../assets/icons/plus.svg'
 import { decrementFood, incrementFood } from '../../store/basket/basketThunk'
 import { useDispatch } from 'react-redux'
+import { ActionsTypeSnackbar } from '../../store/snackbar/snackbar'
 
 export const BasketItem = ({ title, price, amount, id }) => {
   const dispatch = useDispatch()
 
-  const incrementFoodHandler = () => {
-    dispatch(incrementFood({ id: id, amount: amount }))
+  const incrementFoodHandler = async () => {
+    try {
+      await dispatch(incrementFood({ id: id, amount: amount })).unwrap()
+
+      dispatch(ActionsTypeSnackbar.doSuccess())
+    } catch (error) {
+      dispatch(
+        ActionsTypeSnackbar.doError(
+          error ? error.message : 'Something went wrong'
+        )
+      )
+    }
   }
 
-  const decrementFoodHandler = () => {
-    dispatch(decrementFood({ id: id, amount: amount - 1 }))
+  const decrementFoodHandler = async () => {
+    try {
+      await dispatch(decrementFood({ id: id, amount: amount - 1 })).unwrap()
+
+      dispatch(ActionsTypeSnackbar.doSuccess())
+    } catch (error) {
+      dispatch(
+        ActionsTypeSnackbar.doError(
+          error ? error.message : 'Something went wrong'
+        )
+      )
+    }
   }
 
   return (
@@ -117,6 +138,8 @@ const ContainerStyleMinusBasket = styled.button`
   :active {
     background-color: #993108;
   }
+
+  cursor: pointer;
 `
 
 const ContainerStylePlusBasket = styled.button`
@@ -143,4 +166,6 @@ const ContainerStylePlusBasket = styled.button`
   :active {
     background-color: #993108;
   }
+
+  cursor: pointer;
 `

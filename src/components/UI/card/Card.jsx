@@ -23,5 +23,5 @@ const CardStyle = styled.div`
   max-width: 64.9375rem;
   margin: 0px auto;
 
-  animation: 1s ease-out 0s 1 normal forwards running ${rotate};
+  /* animation: 1s ease-out 0s 1 normal forwards running ${rotate}; */
 `

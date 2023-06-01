@@ -17,6 +17,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  z-index: 1000;
+  z-index: 99009;
   background-color: rgba(0, 0, 0, 0.75);
 `

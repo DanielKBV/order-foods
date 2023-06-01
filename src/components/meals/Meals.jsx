@@ -7,9 +7,7 @@ import { Loading } from '../UI/loading/Loading'
 import { getMeals } from '../../store/meals/mealsThunk'
 
 export const Meals = () => {
-  const { meals, isLoading, isError } = useSelector((state) => state.meals)
-  console.log('isError: ', isError)
-
+  const { meals, isLoading } = useSelector((state) => state.meals)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -19,7 +17,6 @@ export const Meals = () => {
   return (
     <>
       {isLoading && <Loading />}
-      {isError && <h1 style={{ color: 'red' }}>Error</h1>}
       <Container>
         <Card>
           {meals?.map((meal) => (
