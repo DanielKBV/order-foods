@@ -1,13 +1,20 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { fetchRequest } from '../../lib/fetchAPI'
+import {
+  deleteDecrementFoodRequest,
+  getBasketRequest,
+  incrementFoodRequest,
+  putDecrementFoodRequest,
+} from '../../api/basketService'
+import { addItemRequest } from '../../api/mealsService'
 
 export const getBasket = createAsyncThunk(
   'basket/getBasket ',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchRequest('/basket')
+      const response = await getBasketRequest()
+      const { data } = response.data
 
-      return response.items
+      return data.items
     } catch (error) {
       return rejectWithValue(error)
     }
@@ -18,14 +25,12 @@ export const addItem = createAsyncThunk(
   'basket/addItem ',
   async (payload, { dispatch, rejectWithValue }) => {
     try {
-      const response = await fetchRequest(`/foods/${payload.id}/addToBasket`, {
-        method: 'POST',
-        body: { amount: payload.amount },
-      })
+      const response = await addItemRequest(payload)
+      const { data } = response.data
 
       dispatch(getBasket())
 
-      return await response.items
+      return await data.items
     } catch (error) {
       return rejectWithValue(error)
     }
@@ -34,12 +39,9 @@ export const addItem = createAsyncThunk(
 
 export const incrementFood = createAsyncThunk(
   'basket/putIncrementFood',
-  async ({ amount, id }, { dispatch, rejectWithValue }) => {
+  async (payload, { dispatch, rejectWithValue }) => {
     try {
-      const response = await fetchRequest(`/basketItem/${id}/update`, {
-        method: 'PUT',
-        body: { amount: amount + 1 },
-      })
+      const response = await incrementFoodRequest(payload)
 
       dispatch(getBasket())
 
@@ -52,32 +54,24 @@ export const incrementFood = createAsyncThunk(
 
 export const decrementFood = createAsyncThunk(
   'basket/putDecrementFood',
-  async ({ amount, id }, { dispatch, rejectWithValue }) => {
-    if (amount !== 0) {
-      try {
-        const response = await fetchRequest(`/basketItem/${id}/update`, {
-          method: 'PUT',
-          body: { amount: amount },
-        })
-
-        dispatch(getBasket())
-
-        return await response.items
-      } catch (error) {
-        return rejectWithValue(error)
+  async (payload, { dispatch, rejectWithValue }) => {
+    try {
+      let response
+      if (payload.amount !== 0) {
+        response = await putDecrementFoodRequest(payload)
+      } else {
+        response = await deleteDecrementFoodRequest(payload)
       }
-    } else {
-      try {
-        const response = await fetchRequest(`/basketItem/${id}/delete`, {
-          method: 'DELETE',
-        })
 
-        dispatch(getBasket())
+      const { data } = response.data
 
-        return await response.items
-      } catch (error) {
-        return rejectWithValue(error)
-      }
+      console.log('response: ', data)
+
+      dispatch(getBasket())
+
+      return await data.items
+    } catch (error) {
+      return rejectWithValue(error)
     }
   }
 )
