@@ -19,6 +19,8 @@ export const Button = (props) => {
     dbBgColor,
     dbColor = '#fff',
     disabled,
+    borderradius = '20px',
+    type,
   } = props
 
   return (
@@ -37,6 +39,8 @@ export const Button = (props) => {
       disabledBackgroundColor={dbBgColor}
       disabledColor={dbColor}
       disabled={disabled}
+      borderradius={borderradius}
+      type={type}
     >
       {children}
     </ButtonStyle>
@@ -54,7 +58,7 @@ const ButtonStyle = styled.button`
 
   background-color: ${(props) => props.backgroundColor};
   color: ${(props) => props.color};
-  border-radius: 20px;
+  border-radius: ${(props) => props.borderradius};
   border: none;
 
   display: flex;

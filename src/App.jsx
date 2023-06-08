@@ -1,15 +1,11 @@
-import { useCallback, useState } from 'react'
-import { Header } from './components/header/Header'
-import { MealSummary } from './components/meal-summary/MealSummary'
-import { Meals } from './components/meals/Meals'
-import { Basket } from './components/basket/Basket'
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from './store'
 import { ActionsTypeSnackbar } from './store/snackbar/snackbar'
 import { SnackbarMui } from './components/UI/snackbar/Snackbar'
+import { BrowserRouter } from 'react-router-dom'
+import { MainRoutes } from './routes/routes'
 
 const AppContent = () => {
-  const [toggle, setToggle] = useState(false)
   const { open } = useSelector((state) => state.snackbar)
   const dispatch = useDispatch()
 
@@ -17,25 +13,20 @@ const AppContent = () => {
     dispatch(ActionsTypeSnackbar.closeSnackbar())
   }
 
-  const toggleHandler = useCallback(() => {
-    setToggle((prev) => !prev)
-  }, [])
-
   return (
-    <>
+    <div>
       {open && <SnackbarMui onClose={onCloseHandler} />}
-      <Header toggleHandler={toggleHandler} />
-      <MealSummary />
-      <Meals />
-      {toggle && <Basket toggleHandler={toggleHandler} toggle={toggle} />}
-    </>
+      <MainRoutes />
+    </div>
   )
 }
 
 const App = () => {
   return (
     <Provider store={store}>
-      <AppContent />
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
     </Provider>
   )
 }

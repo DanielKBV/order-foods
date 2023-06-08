@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { OrderBasket } from './OrderBasket'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button } from '.././UI/button/Button'
+import { useNavigate } from 'react-router-dom'
+import { ActionTypeAuth } from '../../store/auth/authSlice'
 
 export const Header = ({ toggleHandler }) => {
+  const dispatch = useDispatch()
   const [animationClass, setAnimationClass] = useState('')
+  const navigate = useNavigate()
   const { items } = useSelector((state) => state.basket)
+  const { isAuthorization } = useSelector((state) => state.auth)
 
   const plusAnimation = () => {
     setAnimationClass('bump')
@@ -23,13 +29,51 @@ export const Header = ({ toggleHandler }) => {
     plusAnimation()
   }, [items])
 
+  const navigateToSignIn = () => {
+    navigate('/signIn')
+  }
+
+  const logOutHandler = () => {
+    dispatch(ActionTypeAuth.logOut())
+  }
+
+  const navigateToHome = () => {
+    navigate('/')
+  }
+
   return (
     <HeaderStyle>
       <Container>
-        <MealsText>React Meals</MealsText>
-        <OrderBasket className={animationClass} toggleHandler={toggleHandler}>
-          Your Cart
-        </OrderBasket>
+        <MealsText onClick={navigateToHome}>React Meals</MealsText>
+
+        <ContainerButton>
+          <OrderBasket className={animationClass} toggleHandler={toggleHandler}>
+            Your Cart
+          </OrderBasket>
+          {!isAuthorization ? (
+            <Button
+              fontSize="1.2rem"
+              bgColor="#5a1f08"
+              padding="20px 20px"
+              borderradius="6px"
+              hvBgColor="#4d1601"
+              onClick={navigateToSignIn}
+            >
+              Sign In
+            </Button>
+          ) : (
+            <Button
+              fontSize="1.2rem"
+              bgColor="#5a1f08"
+              padding="20px 20px"
+              borderradius="6px"
+              hvBgColor="#4d1601"
+              onClick={logOutHandler}
+            >
+              Log Out
+            </Button>
+          )}
+        </ContainerButton>
       </Container>
     </HeaderStyle>
   )
@@ -81,4 +125,12 @@ const MealsText = styled.p`
   font-size: 38px;
   line-height: 57px;
   color: #ffffff;
+
+  cursor: pointer;
+`
+
+const ContainerButton = styled.div`
+  display: flex;
+  gap: 40px;
+  align-items: center;
 `
