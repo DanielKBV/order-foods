@@ -11,13 +11,16 @@ export const BasketItem = ({ title, price, amount, id }) => {
 
   const incrementFoodHandler = async () => {
     try {
-      await dispatch(incrementFood({ id: id, amount: amount })).unwrap()
+      const response = await dispatch(
+        incrementFood({ id: id, amount: amount })
+      ).unwrap()
 
+      console.log('response: ', response)
       dispatch(ActionsTypeSnackbar.doSuccess())
     } catch (error) {
       dispatch(
         ActionsTypeSnackbar.doError(
-          error ? error.message : 'Something went wrong'
+          error ? error.response.data.message : 'Something went wrong'
         )
       )
     }

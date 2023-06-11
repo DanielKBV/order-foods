@@ -22,11 +22,12 @@ export const SignIn = () => {
     try {
       await dispatch(signIn(values)).unwrap()
       navigate('/')
+
       dispatch(ActionsTypeSnackbar.doSuccess())
     } catch (error) {
       dispatch(
         ActionsTypeSnackbar.doError(
-          error ? error.message : 'Something went wrong'
+          error ? error.response.data.message : 'Something went wrong'
         )
       )
     }

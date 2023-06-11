@@ -10,9 +10,11 @@ export const snackbarSlice = createSlice({
   name: 'snackbar',
   initialState,
   reducers: {
-    doSuccess(state) {
+    doSuccess(state, action) {
       state.severity = state.severity = 'success'
-      state.message = state.message = 'Successfully'
+      state.message = state.message = action.payload
+        ? action.payload
+        : 'Successfully'
       state.open = state.open = true
     },
     doError(state, action) {

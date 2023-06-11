@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { MealsItemForm } from './MealsItemForm'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addItem } from '../../store/basket/basketThunk'
 import { ActionsTypeSnackbar } from '../../store/snackbar/snackbar'
 
 export const MealItem = ({ meal }) => {
   const dispatch = useDispatch()
+  const { token } = useSelector((state) => state.auth)
 
   const addBasket = async (amount) => {
     try {
@@ -14,6 +15,7 @@ export const MealItem = ({ meal }) => {
         addItem({
           id: meal._id,
           amount: amount,
+          token: token,
         })
       ).unwrap()
 
@@ -21,7 +23,7 @@ export const MealItem = ({ meal }) => {
     } catch (error) {
       dispatch(
         ActionsTypeSnackbar.doError(
-          error ? error.message : 'Something went wrong'
+          error ? error.response.data.message : 'Something went wrong'
         )
       )
     }

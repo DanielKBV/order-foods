@@ -41,13 +41,13 @@ export const SignUp = () => {
   const submitHandler = async (values) => {
     try {
       await dispatch(signUp(values)).unwrap()
-      navigate('/')
+      navigate('/signIn')
 
       dispatch(ActionsTypeSnackbar.doSuccess())
     } catch (error) {
       dispatch(
         ActionsTypeSnackbar.doError(
-          error ? error.message : 'Something went wrong'
+          error ? error.response.data.message : 'Something went wrong'
         )
       )
     }
